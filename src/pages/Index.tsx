@@ -10,7 +10,10 @@ const Index = () => {
       <div className="max-w-3xl w-full text-center mb-8">
         <h1 className="text-4xl font-bold text-purple-800 mb-2">Document Scanner App</h1>
         <p className="text-gray-600">
-          Using advanced edge detection algorithms based on Laplacian and Sobel filters
+          Client-side edge detection demo using Laplacian and Sobel filters
+        </p>
+        <p className="text-sm text-purple-600 mt-2">
+          This demo processes images directly in your browser - no server required!
         </p>
       </div>
       <div className="w-full flex flex-col items-center justify-center">
@@ -36,6 +39,13 @@ const Index = () => {
                   <p className="text-sm text-gray-600 mt-1">
                     Calculates the gradient of image intensity at each pixel, emphasizing edges in both horizontal and
                     vertical directions. Produces softer edges with better noise handling.
+                  </p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <h3 className="font-semibold text-purple-700">How It Works</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    This demo implements edge detection algorithms directly in JavaScript using HTML5 Canvas.
+                    Upload an image file, select your preferred filter method, and see the results instantly!
                   </p>
                 </div>
               </div>
