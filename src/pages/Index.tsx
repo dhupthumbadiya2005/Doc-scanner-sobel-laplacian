@@ -2,6 +2,7 @@
 import React from "react";
 import ScannerForm from "@/components/ScannerForm";
 import TeamFooter from "@/components/TeamFooter";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Index = () => {
   return (
@@ -12,8 +13,35 @@ const Index = () => {
           Using advanced edge detection algorithms based on Laplacian and Sobel filters
         </p>
       </div>
-      <div className="flex-1 w-full flex flex-col justify-center items-center">
-        <ScannerForm />
+      <div className="w-full flex flex-col items-center justify-center">
+        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Card className="col-span-1 md:col-span-2">
+            <CardContent className="p-6">
+              <ScannerForm />
+            </CardContent>
+          </Card>
+          <Card className="col-span-1">
+            <CardContent className="p-6">
+              <h2 className="text-xl font-bold mb-4">About Edge Detection</h2>
+              <div className="space-y-4">
+                <div>
+                  <h3 className="font-semibold text-purple-700">Laplacian Filter</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Detects edges by finding areas with rapid intensity changes using a second-order derivative filter.
+                    Creates sharp, defined edges in documents.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="font-semibold text-purple-700">Sobel Filter</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Calculates the gradient of image intensity at each pixel, emphasizing edges in both horizontal and
+                    vertical directions. Produces softer edges with better noise handling.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       </div>
       <TeamFooter />
     </div>

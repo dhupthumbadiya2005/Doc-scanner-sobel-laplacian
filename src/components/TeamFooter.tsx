@@ -13,7 +13,7 @@ const TeamFooter = () => (
         <span className="ml-1 font-semibold text-purple-500">Vishal Aidasani (23BIT017)</span>
       </span>
     </p>
-    <p className="mt-1">Built for the college project showcase.</p>
+    <p className="mt-1">Both Laplacian and Sobel filters are implemented for optimal document processing.</p>
   </footer>
 );
 

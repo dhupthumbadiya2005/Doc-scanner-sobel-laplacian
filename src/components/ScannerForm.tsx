@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Download, Upload, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 type ScannerFormProps = {};
 
@@ -11,6 +12,7 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [edgeMode, setEdgeMode] = useState<string>("laplacian");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -43,12 +45,24 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
     setIsProcessing(true);
 
     try {
-      // Simulated processing delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Create a mock processed file (for demonstration)
-      // In a real app, this would come from your Flask backend
-      setBlobUrl(URL.createObjectURL(selectedFile));
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("edgemode", edgeMode);
+
+      // Make request to the Flask backend
+      const response = await fetch("http://localhost:5000/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Server error: ${errorText}`);
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      setBlobUrl(url);
       
       toast({
         title: "Success!",
@@ -57,7 +71,7 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
     } catch (err) {
       toast({
         title: "Processing failed",
-        description: "An error occurred while processing your document.",
+        description: err instanceof Error ? err.message : "An error occurred while processing your document.",
         variant: "destructive",
       });
       console.error("Error:", err);
@@ -87,6 +101,25 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
         Upload a PDF. We'll scan and enhance your documents with crisp, clean edge detection!
       </p>
       <div className="flex flex-col gap-2">
+        <label htmlFor="edge-mode" className="font-medium text-gray-700 mb-1">
+          Edge Detection Method
+        </label>
+        <ToggleGroup
+          type="single"
+          value={edgeMode}
+          onValueChange={(value) => value && setEdgeMode(value)}
+          className="justify-start"
+        >
+          <ToggleGroupItem value="laplacian" aria-label="Laplacian filter">
+            Laplacian
+          </ToggleGroupItem>
+          <ToggleGroupItem value="sobel" aria-label="Sobel filter">
+            Sobel
+          </ToggleGroupItem>
+        </ToggleGroup>
+      </div>
+      
+      <div className="flex flex-col gap-2">
         <label htmlFor="file-upload" className="font-medium text-gray-700 mb-1">
           Choose PDF File
         </label>
@@ -101,6 +134,7 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
             file:text-sm file:font-semibold file:bg-purple-50 file:text-primary"
         />
       </div>
+
       <Button
         disabled={isProcessing || !selectedFile}
         type="submit"
