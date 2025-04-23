@@ -43,25 +43,16 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
     setIsProcessing(true);
 
     try {
-      const formData = new FormData();
-      formData.append("file", selectedFile);
-
-      // Assume Flask backend at /upload (user to connect API)
-      const response = await fetch("/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error("Error processing file");
-      }
-      const blob = await response.blob();
-
-      // PDF download URL
-      setBlobUrl(URL.createObjectURL(blob));
+      // Simulated processing delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Create a mock processed file (for demonstration)
+      // In a real app, this would come from your Flask backend
+      setBlobUrl(URL.createObjectURL(selectedFile));
+      
       toast({
         title: "Success!",
-        description: "Your scanned PDF is ready.",
+        description: "Your document was processed successfully.",
       });
     } catch (err) {
       toast({
@@ -69,6 +60,7 @@ const ScannerForm: React.FC<ScannerFormProps> = () => {
         description: "An error occurred while processing your document.",
         variant: "destructive",
       });
+      console.error("Error:", err);
     } finally {
       setIsProcessing(false);
     }
