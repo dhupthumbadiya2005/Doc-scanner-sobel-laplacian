@@ -10,11 +10,9 @@ const Index = () => {
       <div className="max-w-3xl w-full text-center mb-8">
         <h1 className="text-4xl font-bold text-purple-800 mb-2">Document Scanner App</h1>
         <p className="text-gray-600">
-          Client-side edge detection demo using Laplacian and Sobel filters
+          using Laplacian and Sobel filters
         </p>
-        <p className="text-sm text-purple-600 mt-2">
-          This demo processes images directly in your browser - no server required!
-        </p>
+       
       </div>
       <div className="w-full flex flex-col items-center justify-center">
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
